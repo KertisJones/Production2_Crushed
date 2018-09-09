@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class openDoorCountdown : MonoBehaviour {
     public float timeLeft = 10f;
@@ -17,16 +18,18 @@ public class openDoorCountdown : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (startTimer)
+        //if (startTimer)
+        if (true)
         {
             if (timeLeft >= 0)
             {
                 timeLeft -= Time.deltaTime;
-                text.gameObject.GetComponent<Text>().text = "Stand Here!" + "\n" + Mathf.Ceil(timeLeft);
-
+                text.gameObject.GetComponent<Text>().text = "Time Left:" + "\n" + Mathf.Ceil(timeLeft);
+                //text.gameObject.GetComponent<Text>().text = "Stand Here!" + "\n" + Mathf.Ceil(timeLeft);
                 if (timeLeft < 0)
                 {
-                    Destroy(door);
+                    //Destroy(door);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 }
             }
         }
