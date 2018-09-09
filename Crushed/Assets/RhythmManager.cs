@@ -15,11 +15,15 @@ public class RhythmManager : MonoBehaviour {
 
     public float timeBetweenBeats = 0.5f;
     public float delayAfterClick = 0.5f;
-    public float timeLeft = 0;
+
+    public float percentagePerfect = 0.95f;
+    public int perfectBeatsNeeded = 4;
+    public int perfectBeats = 0;
+
+    private float timeLeft = 0;
     private float delayTimeLeft = 0;
-    public float sizeModifier = 0;
+    private float sizeModifier = 0;
     private bool clickedThisBeat = false;
-    private int perfectBeats = 0;
 
     // Use this for initialization
     void Start () {
@@ -75,8 +79,26 @@ public class RhythmManager : MonoBehaviour {
     void Spawn(Vector3 spawnPoint)
     {
         delayTimeLeft = delayAfterClick;
-        GameObject block = Instantiate(wall, spawnPoint, transform.rotation) as GameObject;
-        float newSize = 0.25f + (2.75f * sizeModifier);
-        block.transform.localScale = new Vector3(newSize, newSize, newSize);
+
+        if (sizeModifier > percentagePerfect)
+        {
+            perfectBeats += 1;
+        }
+        else
+        {
+            perfectBeats = 0;
+        }
+
+        if (perfectBeats == perfectBeatsNeeded)
+        {
+            perfectBeats = 0;
+            Instantiate(enemy, spawnPoint, transform.rotation);
+        }
+        else
+        {
+            float newSize = 0.25f + (2.75f * sizeModifier);
+            GameObject block = Instantiate(wall, spawnPoint, transform.rotation) as GameObject;
+            block.transform.localScale = new Vector3(newSize, newSize, newSize);
+        }
     }
 }
