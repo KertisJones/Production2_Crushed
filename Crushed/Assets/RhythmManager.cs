@@ -9,35 +9,67 @@ public class RhythmManager : MonoBehaviour {
     private Transform playerTrans;
     private Transform finishTrans;
     public AudioClip beatSound;
+    public AudioSource muscicSource;
 
     public float minDistPlayer = 1f;
     public float minDistFinish = 1f;
 
-    public float timeBetweenBeats = 0.5f;
+    private float timeBetweenBeats = 0.5f;
     public float delayAfterClick = 0.5f;
 
     public float percentagePerfect = 0.95f;
     public int perfectBeatsNeeded = 4;
     public int perfectBeats = 0;
 
+    public int bpm = 80;
+
     private float timeLeft = 0;
     private float delayTimeLeft = 0;
     private float sizeModifier = 0;
     private bool clickedThisBeat = false;
+    private float lastTime = 0;
+
+
+
+    //the current position of the song (in seconds)
+    private float songPosition;
+
+    //how much time (in seconds) has passed since the song started
+    private float dsptimesong;
+
+    //the current position of the song (in beats)
+    private float songPosInBeats;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         playerTrans = GameObject.FindGameObjectWithTag("Player").transform;
         finishTrans = GameObject.FindGameObjectWithTag("Finish").transform;
+
+        timeBetweenBeats = 0.75f;
+
+        //record the time when the song starts
+        dsptimesong = (float)AudioSettings.dspTime;
+
+        //start the song
+        muscicSource.Play();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        songPosition = (float)(AudioSettings.dspTime - dsptimesong);
+
+        songPosInBeats = songPosition / timeBetweenBeats;
+
+
         if (timeLeft > 0)
         {
-            timeLeft -= Time.deltaTime;
-            delayTimeLeft -= Time.deltaTime;
+            timeLeft -= muscicSource.time - lastTime;
+            delayTimeLeft -= muscicSource.time - lastTime;
+
+            lastTime = muscicSource.time;
+
+            
             //sizeModifier = Mathf.Abs(Mathf.Cos(Mathf.Deg2Rad * (180 * (timeBetweenBeats / timeLeft))));
             if (timeLeft >= timeBetweenBeats / 2)
             {
@@ -49,14 +81,19 @@ public class RhythmManager : MonoBehaviour {
             }
 
 
-            if (timeLeft > timeBetweenBeats * 0.49 && timeLeft < timeBetweenBeats * 0.51)
+            if (timeLeft == timeBetweenBeats * 0.5 )//&& timeLeft < timeBetweenBeats * 0.5001)
             {
                 clickedThisBeat = false;
             }
         }
         else
         {
+            Debug.Log(timeLeft);
             timeLeft = timeBetweenBeats;
+            timeLeft -= muscicSource.time - lastTime;
+            delayTimeLeft -= muscicSource.time - lastTime;
+
+            lastTime = muscicSource.time;
             AudioSource.PlayClipAtPoint(beatSound, new Vector3(0f, 0f, -10f));
         }
 
