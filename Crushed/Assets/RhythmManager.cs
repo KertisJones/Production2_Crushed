@@ -55,14 +55,14 @@ public class RhythmManager : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         songPosition = (float)(AudioSettings.dspTime - dsptimesong);
 
         songPosInBeats = songPosition / timeBetweenBeats;
 
-
-        if (timeLeft > 0)
+        //Debug.Log(songPosition % timeBetweenBeats);
+        if ((songPosition % timeBetweenBeats > 0.01 && timeLeft > 0) || timeLeft > timeBetweenBeats - 0.1)
         {
             timeLeft -= muscicSource.time - lastTime;
             delayTimeLeft -= muscicSource.time - lastTime;
@@ -88,7 +88,7 @@ public class RhythmManager : MonoBehaviour {
         }
         else
         {
-            Debug.Log(timeLeft);
+            //Debug.Log(timeLeft);
             timeLeft = timeBetweenBeats;
             timeLeft -= muscicSource.time - lastTime;
             delayTimeLeft -= muscicSource.time - lastTime;
@@ -104,7 +104,12 @@ public class RhythmManager : MonoBehaviour {
             Vector3 spawnPoint = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0);
             if (Vector3.Distance(spawnPoint, playerTrans.position) >= minDistPlayer && delayTimeLeft < 0)
             {
+                //Debug.Log("Attempting to spawn...");
                 Spawn(spawnPoint);
+            }
+            else
+            {
+                Debug.Log("Couldn't spawn.");
             }
         }
         if (Input.GetButtonDown("Cancel"))
@@ -130,9 +135,11 @@ public class RhythmManager : MonoBehaviour {
         {
             perfectBeats = 0;
             Instantiate(enemy, spawnPoint, transform.rotation);
+            Debug.Log("Spawning enemy.");
         }
         else
         {
+            Debug.Log("Spawning block.");
             float newSize = 0.25f + (2.75f * sizeModifier);
             GameObject block = Instantiate(wall, spawnPoint, transform.rotation) as GameObject;
             block.transform.localScale = new Vector3(newSize, newSize, newSize);

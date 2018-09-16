@@ -767,7 +767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wall: {fileID: 1426491133439956, guid: 4943a914071cd4e499af284c0a8d9aaf, type: 2}
   enemy: {fileID: 1333880344105832, guid: b5267e9ef3e89be4584878a93957754a, type: 2}
-  beatSound: {fileID: 8300000, guid: 1c7897298192ac743a8dd3563d5fcc8f, type: 3}
+  beatSound: {fileID: 8300000, guid: 770cd9df4c1ed6244b5dbb0b2051385f, type: 3}
   muscicSource: {fileID: 1043837400}
   minDistPlayer: 0
   minDistFinish: 0
@@ -6111,7 +6111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67ac96193d551144895433bce99e5924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLeft: 60
+  timeLeft: 86
   door: {fileID: 1856904692}
   text: {fileID: 903188411}
 --- !u!61 &1835155868
