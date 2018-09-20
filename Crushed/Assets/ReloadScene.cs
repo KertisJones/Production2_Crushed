@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class ReloadScene : MonoBehaviour {
     public float timeLeft = 0f;
@@ -36,6 +37,8 @@ public class ReloadScene : MonoBehaviour {
         if (other.tag == "Player")
         {
             startTimer = true;
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().DOShakePosition(timeLeft, 1, 10, 90, true);
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Fading>().BeginFade(1);
         }
     }
 }
